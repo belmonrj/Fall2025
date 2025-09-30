@@ -89,9 +89,14 @@ int main(int argc, char *argv[])
   // --- Declare histograms --- //
   // -------------------------- //
 
-  TH1F *hhcent = new TH1F("hhcent","cent",100,0,100); // doesn't work, event bias
-  TH1F *hhbbcz = new TH1F("hhbbcz","bbcz",100,-50,50);
+  TH1D *hhcent = new TH1D("hhcent","cent",100,-0.5,99.5);
+  TH1D *hhmbdz = new TH1D("hhmbdz","mbdz",100,-50,50);
 
+  TH1D* th1d_sepd_all_e = new TH1D("th1d_sepd_all_e","",100,-1,9);
+  TH1D* th1d_sepd_all_r = new TH1D("th1d_sepd_all_r","",100,0,100);
+  TH1D* th1d_sepd_all_phi = new TH1D("th1d_sepd_all_phi","",630,-6.3,6.3);
+  TH1D* th1d_sepd_all_arm = new TH1D("th1d_sepd_all_arm","",5,-2.5,2.5);
+  TH1D* th1d_sepd_all_good = new TH1D("th1d_sepd_all_good","",5,-2.5,2.5);
 
 
   // ---------------------------- //
@@ -137,24 +142,54 @@ int main(int argc, char *argv[])
       else cout << "Successfully got the tree" << endl;
 
 
-      int n=(int)t->GetEntries(); // number of events in tree
-      //hadrontree *ktree = new hadrontree(t); // pointer to tree
-      test *ktree = new test(t); // pointer to tree
-      for(int i=0;i<n;i++) // loop over events
+      int nevt = (int)t->GetEntries(); // number of events in tree
+      test *tree = new test(t); // pointer to tree
+      for ( int ievt = 0; ievt < nevt; ++ievt ) // loop over events
 	{
 
-	  ktree->GetEntry(i);
+          // very stupid event counter
+          ++nevents;
 
-	  float bbcz = ktree->zvrtx;
-	  float cent = ktree->centrality;
+	  tree->GetEntry(ievt);
+
+	  float mbdz = tree->zvrtx;
+	  float cent = tree->centrality;
 
 	  hhcent->Fill(cent);
-	  hhbbcz->Fill(bbcz);
+	  hhmbdz->Fill(mbdz);
+
+          //if ( ievt < 100 ) cout << cent << endl;
+          //if ( cent > 0 ) cout << cent << endl;
+
+          for ( int iepd = 0; iepd < 744; ++iepd )
+            {
+              float e = tree->sepd_energy[iepd];
+              float r = tree->sepd_radius[iepd];
+              float phi = tree->sepd_phi[iepd];
+              int arm = tree->sepd_arm[iepd];
+              int good = tree->sepd_isgood[iepd];
+
+              th1d_sepd_all_e->Fill(e);
+              th1d_sepd_all_r->Fill(r);
+              th1d_sepd_all_phi->Fill(phi);
+              th1d_sepd_all_arm->Fill(arm);
+              th1d_sepd_all_good->Fill(good);
+
+              if ( ievt == 0 )
+                {
+                  cout << "For sEPD \"channel\" " << iepd << " : " << endl;
+                  cout << "e = " << e << endl;
+                  cout << "r = " << r << endl;
+                  cout << "phi = " << phi << endl;
+                  cout << "arm = " << arm << endl;
+                  cout << "good = " << good << endl;
+                }
+            }
 
 	} // End of event loop
 
       t->Delete();
-      delete ktree;
+      delete tree;
       f->Close();
       delete f;
 
