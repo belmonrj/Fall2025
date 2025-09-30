@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
   gettimeofday(&Time,0);
   int begintime = Time.tv_sec;
-  //cout<<"begintime is "<<begintime<<endl;
+  cout<<"begintime is "<<begintime<<endl;
 
   // ----------------------------
 
@@ -110,6 +110,7 @@ int main(int argc, char *argv[])
       cout<<"list input error: file does not exist "<<endl;
       return 1;
     }
+  else cout << "Successfully opened " << inFile << endl;
   while(fin.getline(filename,100))
     {
 
@@ -122,8 +123,9 @@ int main(int argc, char *argv[])
 	  cout<<"pDST input error: file does not exist "<<endl;
 	  continue;
 	}
+      else cout << "Successfully opened " << filename << endl;
 
-      nevents += (Long64_t)((TH1F *)f->Get("hcent"))->GetEntries();
+      //nevents += (Long64_t)((TH1F *)f->Get("hcent"))->GetEntries();
 
       //TTree *t=(TTree *)f->Get("hadrontree");
       TTree *t=(TTree *)f->Get("T");
@@ -132,6 +134,7 @@ int main(int argc, char *argv[])
 	  cout<<"pDST input error: cannot find tree "<<endl;
 	  continue;
 	}
+      else cout << "Successfully got the tree" << endl;
 
 
       int n=(int)t->GetEntries(); // number of events in tree
@@ -142,7 +145,7 @@ int main(int argc, char *argv[])
 
 	  ktree->GetEntry(i);
 
-	  float bbcz = ktree->zvbrtx;
+	  float bbcz = ktree->zvrtx;
 	  float cent = ktree->centrality;
 
 	  hhcent->Fill(cent);
