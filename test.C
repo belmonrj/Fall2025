@@ -1,8 +1,8 @@
 #define test_cxx
 #include "test.h"
-#include "TH2.h"
-#include "TStyle.h"
-#include "TCanvas.h"
+#include <TH2.h>
+#include <TStyle.h>
+#include <TCanvas.h>
 
 void test::Loop()
 {

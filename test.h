@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Sep 30 16:35:14 2025 by ROOT version 6.32.06
+// Tue Sep 30 17:17:07 2025 by ROOT version 6.32.06
 // from TTree T/T
 // found on file: 72867/run3auau_new_newcalib_v008-00072867-000000.root
 //////////////////////////////////////////////////////////
@@ -8,9 +8,9 @@
 #ifndef test_h
 #define test_h
 
-#include "TROOT.h"
-#include "TChain.h"
-#include "TFile.h"
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
 
