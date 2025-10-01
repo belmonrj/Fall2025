@@ -19,7 +19,8 @@ namespace flow_functions
   TComplex get_flow_vector(const std::vector<double>& phi_angles, int harmonic);
   TComplex get_weighted_flow_vector(const std::vector<std::pair<double,double>>& phi_weight, int harmonic);
   std::array<TComplex, max_harmonic> get_flow_vectors(const std::vector<double>& phi_angles);
-  std::array<std::array<TComplex, max_harmonic>, max_power> get_weighted_flow_vectors(const std::vector<std::pair<double,double>>& phi_weight);
+  std::array<TComplex, max_harmonic> get_weighted_flow_vectors(const std::vector<std::pair<double,double>>& phi_weight);
+  std::array<std::array<TComplex, max_harmonic>, max_power> get_power_weighted_flow_vectors(const std::vector<std::pair<double,double>>& phi_weight);
 
   // Some basic correlation functions
   double calccosevent(const std::array<TComplex, max_harmonic>& allQ, int harmonic);

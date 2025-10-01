@@ -28,7 +28,6 @@ TComplex get_weighted_flow_vector(const std::vector<std::pair<double,double>>& p
   return Q;
 }
 
-// --- wondering if I want to change this...
 std::array<TComplex,max_harmonic> get_flow_vectors(const std::vector<double>& phi_angles)
 {
   std::array<TComplex,max_harmonic> allQ{};
@@ -39,8 +38,18 @@ std::array<TComplex,max_harmonic> get_flow_vectors(const std::vector<double>& ph
   return allQ;
 }
 
-// --- because I think I want to do this differently
-std::array<std::array<TComplex,max_harmonic>,max_power> get_weighted_flow_vectors(const std::vector<std::pair<double,double>>& phi_weight)
+std::array<TComplex,max_harmonic> get_weighted_flow_vectors(const std::vector<std::pair<double,double>>& phi_weight)
+{
+  std::array<TComplex,max_harmonic> allQ{};
+  for ( int i = 0; i < max_harmonic; ++i )
+    {
+      allQ[i] = get_weighted_flow_vector(phi_weight,i);
+    }
+  return allQ;
+}
+
+// --- I wonder if I want to do this differently
+std::array<std::array<TComplex,max_harmonic>,max_power> get_power_weighted_flow_vectors(const std::vector<std::pair<double,double>>& phi_weight)
 {
   std::vector<std::pair<double,double>> new_phi_weight = phi_weight;
   std::array<std::array<TComplex,max_harmonic>,max_power> allQ{{}};
