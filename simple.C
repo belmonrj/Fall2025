@@ -1,5 +1,5 @@
 // Author: Ron Belmont
-// Date: 2009-07-28
+// Date: 2025-09-30
 
 #include <iostream>
 #include <fstream>
@@ -12,6 +12,7 @@
 #include <sys/time.h>
 
 #include "test.h"
+#include "flow_functions.h"
 
 //#include "TROOT.h"
 #include "TFile.h"
@@ -161,6 +162,8 @@ int main(int argc, char *argv[])
           //if ( ievt < 100 ) cout << cent << endl;
           //if ( cent > 0 ) cout << cent << endl;
 
+          std::vector<double> all_phi;
+          std::vector<std::pair<double,double>> all_phi_e;
           for ( int iepd = 0; iepd < 744; ++iepd )
             {
               float e = tree->sepd_energy[iepd];
@@ -175,15 +178,17 @@ int main(int argc, char *argv[])
               th1d_sepd_all_arm->Fill(arm);
               th1d_sepd_all_good->Fill(good);
 
-              if ( ievt == 0 )
-                {
-                  cout << "For sEPD \"channel\" " << iepd << " : " << endl;
-                  cout << "e = " << e << endl;
-                  cout << "r = " << r << endl;
-                  cout << "phi = " << phi << endl;
-                  cout << "arm = " << arm << endl;
-                  cout << "good = " << good << endl;
-                }
+              all_phi.push_back(phi);
+              all_phi_e.push_back(std::make_pair(phi,e));
+            }
+
+          TComplex all_Q2 = flow_functions::get_flow_vector(all_phi,2);
+          TComplex all_weighted_Q2 = flow_functions::get_weighted_flow_vector(all_phi_e,2);
+
+          if ( ievt < 10 )
+            {
+              cout << "all Q2 " << all_Q2 << endl;
+              cout << "all weighted Q2 " << all_weighted_Q2 << endl;
             }
 
 	} // End of event loop
