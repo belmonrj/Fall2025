@@ -163,7 +163,11 @@ int main(int argc, char *argv[])
           //if ( cent > 0 ) cout << cent << endl;
 
           std::vector<double> all_phi;
+          std::vector<double> south_phi;
+          std::vector<double> north_phi;
           std::vector<std::pair<double,double>> all_phi_e;
+          std::vector<std::pair<double,double>> south_phi_e;
+          std::vector<std::pair<double,double>> north_phi_e;
           for ( int iepd = 0; iepd < 744; ++iepd )
             {
               float e = tree->sepd_energy[iepd];
@@ -180,15 +184,34 @@ int main(int argc, char *argv[])
 
               all_phi.push_back(phi);
               all_phi_e.push_back(std::make_pair(phi,e));
+              if ( arm == 0 )
+                {
+                  south_phi.push_back(phi);
+                  south_phi_e.push_back(std::make_pair(phi,e));
+                }
+              if ( arm == 1 )
+                {
+                  north_phi.push_back(phi);
+                  north_phi_e.push_back(std::make_pair(phi,e));
+                }
+
             }
 
           TComplex all_Q2 = flow_functions::get_flow_vector(all_phi,2);
+          TComplex south_Q2 = flow_functions::get_flow_vector(south_phi,2);
+          TComplex north_Q2 = flow_functions::get_flow_vector(north_phi,2);
           TComplex all_weighted_Q2 = flow_functions::get_weighted_flow_vector(all_phi_e,2);
+          TComplex south_weighted_Q2 = flow_functions::get_weighted_flow_vector(north_phi_e,2);
+          TComplex north_weighted_Q2 = flow_functions::get_weighted_flow_vector(north_phi_e,2);
 
           if ( ievt < 10 )
             {
               cout << "all Q2 " << all_Q2 << endl;
+              cout << "south Q2 " << south_Q2 << endl;
+              cout << "north Q2 " << north_Q2 << endl;
               cout << "all weighted Q2 " << all_weighted_Q2 << endl;
+              cout << "south weighted Q2 " << south_weighted_Q2 << endl;
+              cout << "north weighted Q2 " << north_weighted_Q2 << endl;
             }
 
 	} // End of event loop
